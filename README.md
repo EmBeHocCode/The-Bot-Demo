@@ -1,4 +1,4 @@
-# Zia — Zalo AI Bot
+# Meow — Zalo AI Bot
 
 <div align="center">
 
@@ -18,7 +18,7 @@
 
 ## 🎯 Tổng Quan
 
-**Zia** là monorepo Bun Workspaces gồm 2 ứng dụng phối hợp:
+**Meow** là monorepo Bun Workspaces gồm 2 ứng dụng phối hợp:
 
 | App | Vai trò | Stack chính |
 |-----|---------|-------------|
@@ -73,8 +73,8 @@ Bot nhận tin nhắn từ Zalo qua WebSocket (zca-js), xử lý qua pipeline mo
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/your-org/zia.git
-cd zia
+git clone https://github.com/your-org/meow.git
+cd meow
 
 # 2. Cài tất cả dependencies (bot + web)
 bun install
@@ -573,7 +573,7 @@ Migrations nằm trong `apps/bot/drizzle/`.
 ## 🏗️ Kiến Trúc Code
 
 ```
-zia/
+meow/
 ├── apps/
 │   ├── bot/
 │   │   ├── src/
@@ -755,12 +755,12 @@ service-uninstall.cmd        # Gỡ dịch vụ
 ### Docker
 
 ```bash
-docker build -t zia-bot -f apps/bot/Dockerfile .
+docker build -t meow-bot -f apps/bot/Dockerfile .
 docker run -d \
-  --name zia-bot \
+  --name meow-bot \
   --env-file apps/bot/.env \
   -p 10000:10000 \
-  zia-bot
+  meow-bot
 ```
 
 ### Docker Compose
