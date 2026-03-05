@@ -468,6 +468,27 @@ Bot tự parse các tag đặc biệt trong output của Gemini:
 
 Dashboard Next.js 16 (App Router) chạy tại port 3000, giao tiếp với bot qua REST API Bearer Auth.
 
+### Ảnh giao diện (Screenshots)
+
+<details>
+  <summary>Bấm để xem toàn bộ ảnh giao diện dashboard</summary>
+
+![Dashboard - Tổng quan](docs/readme-screenshots/screenshot-01.png)
+![Dashboard - API Keys](docs/readme-screenshots/screenshot-02.png)
+![Dashboard - Bộ nhớ](docs/readme-screenshots/screenshot-03.png)
+![Dashboard - Hồ sơ](docs/readme-screenshots/screenshot-04.png)
+![Dashboard - Tác vụ](docs/readme-screenshots/screenshot-05.png)
+![Dashboard - Lệnh bot](docs/readme-screenshots/screenshot-06.png)
+![Dashboard - Bot Terminal (Bot)](docs/readme-screenshots/screenshot-07.png)
+![Dashboard - Bot Terminal (Web)](docs/readme-screenshots/screenshot-08.png)
+![Dashboard - Cài đặt quyền lệnh](docs/readme-screenshots/screenshot-09.png)
+![Dashboard - Đăng nhập QR](docs/readme-screenshots/screenshot-10.png)
+![Dashboard - Nhật ký](docs/readme-screenshots/screenshot-11.png)
+![Dashboard - Lịch sử](docs/readme-screenshots/screenshot-12.png)
+![Dashboard - Backup](docs/readme-screenshots/screenshot-13.png)
+
+</details>
+
 ### Các trang
 
 | Route | Nội dung |
