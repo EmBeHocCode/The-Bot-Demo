@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-beta-orange.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Bun](https://img.shields.io/badge/runtime-Bun%201.0+-orange.svg)
@@ -40,6 +40,9 @@ Bot nhận tin nhắn từ Zalo qua WebSocket (zca-js), xử lý qua pipeline mo
 - **Settings Auto-save** — nút gạt/tích lưu ngay, ô text/số tự lưu khi Enter hoặc click ra ngoài
 - **Command RBAC** — phân quyền lệnh (everyone/admin), bật/tắt từng lệnh, tách riêng khỏi whitelist chat tổng
 - **QR Login qua web** — tạo QR mới, xóa session, theo dõi trạng thái bot, nút eye ẩn/hiện QR tránh lộ mã
+- **Web Chat tab `/chat`** — giao diện chat cố định ~90% viewport, lưu nhiều session, mở lại màn hình trống và resume session cũ theo nhu cầu
+- **Realtime Time & Holiday Context** — bơm mốc thời gian hiện tại (UTC+7) theo từng lượt chat và ngữ cảnh ngày lễ cố định
+- **Chat Persona Guard** — ưu tiên xưng hô `em` với `anh/chị`, hạn chế giọng CSKH và giảm style quá đà khi trả lời kỹ thuật
 - **Process & Service Guard** — chống start chồng bot, ưu tiên NSSM service, fallback process manager
 - **Docker + Cloud-Ready** — health check, base64 credentials, hỗ trợ Railway/Render/Fly.io
 
@@ -47,13 +50,36 @@ Bot nhận tin nhắn từ Zalo qua WebSocket (zca-js), xử lý qua pipeline mo
 
 ### 📌 Phiên bản hiện tại
 
-- **Version:** `1.1.0` (README update: `2026-03-06`)
+- **Version:** `1.2.0` (README update: `2026-03-06`)
+- **Thay đổi chính trong 1.2.0:**
+  - Refactor `chat_style` thành module persona đầy đủ: `normal`, `genz_soft`, `genz_bestie`, `genz_hype`, `flirty_light`
+  - Thêm style guard cho nội dung kỹ thuật: tự giảm emoji/filler, ưu tiên câu sạch khi có log/code/link/hướng dẫn
+  - Chuẩn hóa xưng hô toàn hệ thống chat (web + Zalo): bot xưng `em`, gọi user `anh/chị`
+  - Bổ sung test integration cho `chat_style` và `realtimeTimeHoliday` để giữ ổn định backward compatibility
+- **Thay đổi chính trong 1.1.1:**
+  - Bổ sung trang `/chat` cho web dashboard: chat trực tiếp với bot, session title cố định kiểu `Đoạn chat #N`
+  - Session chat web mở trống khi vào lại, chỉ scroll trong khung chat, hỗ trợ resume hội thoại cũ theo danh sách session
+  - Hiển thị tên/avatar trong chat web theo hồ sơ Admin/Bot (kèm fallback cache local nếu API settings lỗi tạm thời)
+  - Bổ sung `REALTIME TIME CONTEXT` theo từng message để bot trả lời giờ/ngày hiện tại chính xác ngay trong session dài
+  - Bổ sung ngữ cảnh ngày lễ cố định; với lễ âm lịch/lễ di động bot sẽ ưu tiên Google Search để trả ngày chính xác theo năm
+  - Chuẩn hóa xưng hô trong style chat: bot xưng `em`, gọi user `anh/chị`
 - **Thay đổi chính trong 1.1.0:**
   - Bổ sung trang `/zalo-login` quản lý đăng nhập Zalo bằng QR trên web
   - Bổ sung trang `/profile` với 2 hồ sơ riêng (Admin/Bot) và Studio hiệu ứng giao diện
   - Bổ sung command access chi tiết cho non-admin trong settings + dashboard lệnh
   - Chuẩn hóa process/service để giảm lỗi start trùng khi chạy local/service
   - Cập nhật `.gitignore` cho `service-logs` để tránh dirty repo liên tục
+
+### 🆕 Chi tiết tính năng mới (1.2.x)
+
+| Nhóm | Mô tả chi tiết |
+|------|----------------|
+| **Web Chat Sessions** | Tab `/chat` hoạt động theo cơ chế session độc lập. Mỗi session có tiêu đề cố định kiểu `Đoạn chat #N`, có thể tạo mới, mở lại, xóa riêng từng session. Dữ liệu session lưu local để mở lại nhanh, đồng thời context hội thoại phía bot vẫn tách theo `webchat-<sessionId>`. |
+| **Profile-aware chat UI** | Tin nhắn `user` và `bot` trên web lấy display name + avatar từ `settings.profiles.admin` và `settings.profiles.bot`. Nếu API settings tạm lỗi/offline, UI dùng cache local fallback để không mất tên/ảnh ngay. |
+| **Realtime Time & Holiday** | Mỗi lượt chat đều được inject `REALTIME TIME CONTEXT` (timezone UTC+7, ngày/giờ hiện tại, upcoming fixed holidays). Nếu user hỏi lễ âm lịch/lễ di động theo năm, prompt sẽ ưu tiên Google Search để tránh trả sai ngày. |
+| **Chat Style Engine** | `chat_style` hỗ trợ nhiều persona (`normal`, `genz_soft`, `genz_bestie`, `genz_hype`, `flirty_light`) với style-guard: tự giảm độ “gen Z” khi trả lời kỹ thuật, log/code/link/hướng dẫn dài. |
+| **Xưng hô chuẩn** | Cả Zalo và web chat đều ưu tiên bot xưng `em`, gọi user `anh/chị`; hạn chế văn phong CSKH máy móc. |
+| **Regression tests** | Bổ sung integration tests cho `chat_style` và `realtimeTimeHoliday` để giữ backward compatibility của normalize, detect language, search intent/filtering và behavior deterministic theo seed. |
 
 ---
 
@@ -222,6 +248,8 @@ Zalo WebSocket ──► message event
                               │
                    gateway.module.ts
                        ├─ Nạp context lịch sử từ DB (history.repository)
+                       ├─ Normalize slang + build chat-style hint (persona guard)
+                       ├─ Inject REALTIME TIME CONTEXT (UTC+7 + holiday hints)
                        ├─ Download + xử lý media đính kèm:
                        │      ├─ Ảnh  → upload inline data → Gemini
                        │      ├─ Audio/Voice → transcribe tự động
@@ -308,6 +336,20 @@ Các lệnh bot tự gửi trong nhóm:
 |------|-------|
 | `#onbot` | Bật chế độ auto-reply cho nhóm (không cần @mention) |
 | `#unbot` | Tắt chế độ auto-reply |
+
+### 8. Luồng Chat Web Session (`/chat`)
+
+```
+apps/web/chat/page.tsx
+    ├─ Mở trang ở trạng thái trống (không auto-open session cũ)
+    ├─ Tạo session mới theo tiêu đề: "Đoạn chat #N"
+    ├─ Lưu danh sách session/messages vào localStorage
+    ├─ Chọn session bất kỳ để resume hội thoại
+    └─ Gửi message → POST /api/web-chat → proxy /api/web-chat (bot)
+                                  │
+                                  └─ bot chat.api.ts dùng threadId: webchat-<sessionId>
+                                      để giữ context riêng từng session
+```
 
 ---
 
@@ -494,6 +536,7 @@ Dashboard Next.js 16 (App Router) chạy tại port 3000, giao tiếp với bot 
 | Route | Nội dung |
 |-------|---------|
 | `/` | Tổng quan: active threads, thống kê tin nhắn, trạng thái bot |
+| `/chat` | Chat trực tiếp với bot: giao diện cố định ~90% viewport, session lưu local và mở lại theo nhu cầu |
 | `/settings` | Chỉnh sửa toàn bộ `settings.json` (auto-save), reload không restart |
 | `/profile` | Quản lý 2 hồ sơ Admin/Bot + Studio viền/avatar/chữ/cover |
 | `/commands` | Danh mục lệnh bot, phân quyền admin/everyone, bật/tắt từng lệnh |
@@ -534,6 +577,8 @@ bun run --cwd apps/web start
 | `GET` | `/api/zalo-auth/status` | Trạng thái credentials/QR |
 | `GET` | `/api/zalo-auth/qr` | Trả ảnh `qr.png` |
 | `DELETE` | `/api/zalo-auth/session` | Xóa `credentials.json`, `credentials.base64.txt`, `qr.png` |
+| `POST` | `/api/web-chat` | Gửi tin nhắn chat web theo session (`message`, `sessionId`) |
+| `DELETE` | `/api/web-chat/:sessionId` | Xóa context một session chat web |
 | `ALL` | `/api/[...path]` | Proxy sang Bot API, giữ `BOT_API_KEY` ở server-side |
 
 ---
@@ -573,6 +618,8 @@ Bot tự chạy Hono HTTP server tại `http://localhost:10000`. Tất cả endp
 | `GET` | `/api/commands/:name` | Chi tiết một lệnh |
 | `PATCH` | `/api/commands/:name/role` | Set role lệnh (`everyone` / `admin`) |
 | `PATCH` | `/api/commands/:name/toggle` | Enable/disable một lệnh |
+| `POST` | `/api/web-chat` | Chat với bot qua session web (context tách theo `webchat-<sessionId>`) |
+| `DELETE` | `/api/web-chat/:sessionId` | Xóa session chat web phía bot |
 
 ---
 
@@ -613,7 +660,7 @@ meow/
 │   │   │   │
 │   │   │   ├── infrastructure/         # Adapters bên ngoài
 │   │   │   │   ├── ai/                 # GeminiProvider (streaming, key rotation)
-│   │   │   │   ├── api/                # Hono REST API Server (11 routes)
+│   │   │   │   ├── api/                # Hono REST API Server (settings/stats/tasks/.../zalo-auth/web-chat)
 │   │   │   │   ├── backup/             # GitHub Gist backup/restore
 │   │   │   │   ├── database/           # SQLite + Drizzle (connection, repos)
 │   │   │   │   ├── memory/             # VectorMemory (embedding + decay)
@@ -638,10 +685,12 @@ meow/
 │   │   │   └── shared/                 # Dùng chung
 │   │   │       ├── schemas/            # Zod schemas
 │   │   │       ├── types/              # TypeScript types
-│   │   │       └── utils/              # history, messageStore, taskManager
+│   │   │       └── utils/              # history, messageStore, taskManager, chat_style, realtimeTimeHoliday
+│   │   │                                   ├── chat_style.ts (normalize + language + search + persona style)
+│   │   │                                   └── realtimeTimeHoliday.ts (thời gian thực + ngày lễ UTC+7)
 │   │   │
 │   │   ├── tests/
-│   │   │   ├── integration/            # Integration tests theo module
+│   │   │   ├── integration/            # Integration tests theo module + utils (chat_style/realtimeTimeHoliday)
 │   │   │   └── e2e/                    # End-to-end bot tests
 │   │   ├── drizzle/                    # SQL migration files
 │   │   └── settings.json              # Runtime config
@@ -650,6 +699,7 @@ meow/
 │       └── src/
 │           ├── app/                    # Next.js App Router
 │           │   ├── page.tsx            # Dashboard tổng quan
+│           │   ├── chat/               # Chat trực tiếp với bot + session manager
 │           │   ├── settings/           # Trang cài đặt (auto-save)
 │           │   ├── profile/            # Hồ sơ Admin/Bot + style studio
 │           │   ├── logs/               # Trang logs
@@ -662,6 +712,9 @@ meow/
 │           │   ├── backup/             # Cloud backup
 │           │   ├── env-keys/           # Env variables
 │           │   └── api/                # Proxy + process manager + zalo auth routes
+│           │                                ├── [...path] (proxy bot API)
+│           │                                ├── bot-process (start/stop/restart guard)
+│           │                                └── zalo-auth (status/qr/session)
 │           ├── components/
 │           │   ├── dashboard/          # Widgets: ActiveThreads, Stats
 │           │   ├── layout/             # Sidebar, Header
